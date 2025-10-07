@@ -1,0 +1,50 @@
+#include <DHT.h>
+#include <LiquidCrystal.h>
+
+#define DHTPIN 2          // Pin where DHT11 is connected
+#define DHTTYPE DHT11     // DHT11 sensor type
+#define FAN_PIN 8         // Pin to control the fan (relay or transistor)
+
+DHT dht(DHTPIN, DHTTYPE);
+LiquidCrystal lcd(12, 11, 5, 4, 3, 6); // RS, E, D4, D5, D6, D7
+
+float temperature = 0.0;
+float humidity = 0.0;
+const float TEMP_THRESHOLD = 30.0; // Fan turns ON above this temp
+
+void setup() {
+  pinMode(FAN_PIN, OUTPUT);
+  digitalWrite(FAN_PIN, LOW);
+
+  lcd.begin(16, 2);
+  lcd.print("Smart Temp Sys");
+
+  dht.begin();
+  delay(2000);
+  lcd.clear();
+}
+
+void loop() {
+  temperature = dht.readTemperature();
+  humidity = dht.readHumidity();
+
+  lcd.setCursor(0, 0);
+  lcd.print("Temp: ");
+  lcd.print(temperature);
+  lcd.print("C  ");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Hum: ");
+  lcd.print(humidity);
+  lcd.print("%  ");
+
+  if (!isnan(temperature)) {
+    if (temperature > TEMP_THRESHOLD) {
+      digitalWrite(FAN_PIN, HIGH);
+    } else {
+      digitalWrite(FAN_PIN, LOW);
+    }
+  }
+
+  delay(2000);
+}
