@@ -52,5 +52,3 @@ A simple **Arduino-based embedded system** that monitors temperature and humidit
 2. Open `Smart_Temperature_Monitoring_System.ino` in the Arduino IDE.  
 3. Select **Arduino Uno** and correct **COM port**.  
 4. Upload the code and observe the readings on LCD.  
-## 🧾 License
-This project is open-source and free to use for learning and educational purposes.
